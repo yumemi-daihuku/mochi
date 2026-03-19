@@ -540,6 +540,10 @@
       .glossary-item { grid-template-columns: 1fr; gap: 4px; }
       .card { padding: 20px; }
     }
+    @keyframes slideUp {
+      from { transform: translateY(100%); }
+      to   { transform: translateY(0); }
+    }
   </style>
 </head>
 <body>
@@ -562,11 +566,12 @@
   <a href="#society">社会構造</a>
   <a href="#shikai">死生観</a>
   <a href="#osuso">おすそわけ</a>
+  <a href="#accessory">あくせさりー</a>
   <a href="#guideline">創作ガイドライン</a>
   <a href="#tags">タグ案内</a>
   <a href="#glossary">用語集</a>
   <a href="#qa">Q&amp;A</a>
-  <a href="#comments">コメント</a>
+  <a href="#" id="nav-comment-btn" onclick="openCommentTab(event)">💬 コメント・要望</a>
 </nav>
 
 <main>
@@ -607,7 +612,7 @@
         <li>顔：目と口のみ。耳・鼻はない</li>
         <li>体色：人間の肌色に準ずる（白め・小麦色・褐色など個体差あり）</li>
         <li>髪：ほぼ全個体に生えている。色・長さ・形は個体によって様々</li>
-        <li>アクセサリー：自分で拾ってきたものを身につける習性。執着が強い</li>
+        <li>アクセサリー（あくせさりー）：自分で収集し身につける。量が社会的地位に直結する。詳細は「あくせさりー」セクション参照</li>
         <li>四肢：なし。移動はぴょんぴょん跳ねる</li>
       </ul>
     </div>
@@ -692,10 +697,34 @@
     <div class="card">
       <h3>群れの階層</h3>
       <ul>
-        <li><strong>えらもち（1匹）</strong>：自称リーダー。実力より声の大きさで決まる</li>
-        <li><strong>かおもち（2〜3匹）</strong>：えらもちの取り巻き。便乗して威張る</li>
-        <li><strong>ただもち（多数）</strong>：一般個体</li>
-        <li><strong>はぐれもち</strong>：群れを追われた個体。単独行動</li>
+        <li><strong>えらもち（1匹）</strong>：自称リーダー。実力より声の大きさと既成事実の積み重ねで地位を確立する</li>
+        <li><strong>かおもち（2〜3匹）</strong>：えらもちの取り巻き。派閥を形成し互いに競い合う</li>
+        <li><strong>ただもち（多数）</strong>：一般個体。非公式に別のもちを頼る二重構造が生まれやすい</li>
+        <li><strong>はぐれもち</strong>：群れを離れた個体。新たな群れに加わる際は暗黙のルールで最下層扱いから始まる</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h3>えらもちの権力構造</h3>
+      <p style="margin-bottom:12px">えらもちの地位は「実力」ではなく<strong>既成事実の積み重ね</strong>で成立している。</p>
+      <ul>
+        <li>「もちがえらい」と言い始め、誰も否定しないうちに既成事実化する</li>
+        <li>ある程度のあくせさりーを持っていないと「えらい」という主張自体を信用されない。あくせさりーが少ないまま名乗ってもただもちに無視される</li>
+        <li>食べ物の分配を「管理」し始め、異論を唱えたもちに圧力をかける</li>
+        <li>失敗しても認めず、責任を他のもちに押しつける</li>
+        <li>おすそわけの優先受取権だけは本気で主張する</li>
+      </ul>
+      <p style="margin-top:12px;font-size:.88rem;color:var(--ink-light)">
+        対抗手段として、ただもちは命令を「聞こえなかった」ことにする・食べ物をこっそり隠す・非公式に別のもちを頼るといった<strong>じわじわとした無視</strong>で抵抗する。
+      </p>
+    </div>
+
+    <div class="card">
+      <h3>群れの規模による文化の違い</h3>
+      <ul>
+        <li><strong>小規模（3〜5匹）</strong>：えらもちの権力が強い。1匹いなくなるだけで群れが不安定になる。おすそわけが頻繁</li>
+        <li><strong>中規模（6〜15匹）</strong>：最も安定した規模。かおもち間の派閥争いが生まれやすい。はぐれもちを受け入れる余裕がある</li>
+        <li><strong>大規模（16匹以上）</strong>：自然発生的に「準えらもち」が出現する。えらもちが全員を把握できなくなり、派閥が固定化・対立が慢性化する。分裂しやすい</li>
       </ul>
     </div>
 
@@ -707,6 +736,62 @@
         <li>なかまのもちをぬしに告げ口してはいけない（たいていやぶられる）</li>
         <li><strong>こもちはみんなでまもる</strong>（唯一ちゃんと守られるルール）</li>
       </ul>
+    </div>
+
+    <div class="card">
+      <h3>群れ同士の関係・縄張り争い</h3>
+      <p style="margin-bottom:12px">もちの縄張り意識は「食べ物のある場所」に紐づく。食料が豊富な時期は争いが少なく、枯渇すると一気に緊張が高まる。</p>
+      <ul>
+        <li><strong>無視</strong>：距離があれば基本的に関わらない</li>
+        <li><strong>口げんか</strong>：接触した際の最も多い形。戦闘力がないので怒鳴り合いで終わる</li>
+        <li><strong>おすそわけ外交</strong>：隣の群れに自発的におすそわけをすることで友好関係を示す。稀</li>
+        <li><strong>吸収</strong>：弱った群れのただもちが強い群れに自然流入する</li>
+        <li><strong>崩壊戦争</strong>：くろもちの介入などで両群れが同時に機能不全になるケース</li>
+      </ul>
+      <p style="margin-top:12px;font-size:.88rem;color:var(--ink-light)">
+        縄張り争いはほとんどの場合、えらもち同士が「もちのほうがえらい」と言い続けるだけで終わり、ただもちたちが疲弊して勝手に解散・混合し始める。えらもちだけが意地を張り続けて孤立するパターンが多い。
+      </p>
+    </div>
+
+    <div class="card">
+      <h3>群れが崩壊するケース</h3>
+      <ul>
+        <li><strong>えらもちの失墜</strong>：大きな失敗でかおもちが離反→ただもちが気づく→求心力を失い自然解散</li>
+        <li><strong>くろもちによる壊滅</strong>：繰り返しの襲撃で数が減り機能不全に。生き残りがバラバラに逃げてはぐれもちになる。トラウマを持つ個体が生まれやすい</li>
+        <li><strong>内部分裂</strong>：かおもち同士の派閥争いが激化し群れが事実上2つに分裂。えらもちがどちらにもいい顔をして信頼を失い正式分裂に至る</li>
+        <li><strong>ぬし依存による崩壊</strong>：群れの多くが同じぬしに懐きぬし中心に行動するようになる。ぬしがいなくなると「探す集団」と「諦めて解散する集団」に分かれる</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h3>異種間の群れ混在</h3>
+      <ul>
+        <li>
+          <strong>しろもちとえだもちの混在</strong>（最も一般的）：
+          えだもちがえらもちを名乗りやすく、しろもちはいいなりになりやすい。安定しているが歪みが蓄積しやすい
+        </li>
+        <li>
+          <strong>しろもちとくろもちの混在</strong>（極めて稀）：
+          くろもちが群れを外敵から守る代わりに食料を優先的にもらう「保護と提供」の関係。くろもちが本能に負けた瞬間に崩壊する
+        </li>
+        <li>
+          <strong>三種混在</strong>（非常に稀・不安定）：
+          くろもちの存在がえだもちの権威を完全に無効化する。均衡が保たれている間は強い群れになるが、非常に不安定
+        </li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h3>はぐれもちの生態</h3>
+      <p style="margin-bottom:12px">はぐれもちになる経緯は、追放・群れの崩壊・自発的な離脱・生まれつきの単独性など様々。</p>
+      <ul>
+        <li><strong>短期はぐれ（数日〜数週間）</strong>：別の群れへの合流を試みる。受け入れられるかは群れの規模と空気次第</li>
+        <li><strong>長期はぐれ（数ヶ月以上）</strong>：単独行動に慣れていく。群れのルールを忘れ始め、人間への依存度が上がる</li>
+        <li><strong>完全はぐれ</strong>：群れへの帰属欲求がなくなった個体。くろもちに近い行動様式になっていくが、捕食はしない</li>
+      </ul>
+      <p style="margin-top:12px;font-size:.88rem;color:var(--ink-light)">
+        他の群れははぐれもちを基本的に警戒する。中規模群れは条件付きで受け入れることがあるが、しばらくはただもちより下の扱いという暗黙のルールがある。
+      </p>
     </div>
 
     <div class="card">
@@ -852,6 +937,60 @@
     </div>
   </section>
 
+  <!-- あくせさりー -->
+  <section class="section" id="accessory">
+    <h2 class="section-title"><span class="icon">💎</span>あくせさりー</h2>
+
+    <div class="card">
+      <h3>概要</h3>
+      <p>
+        もちが収集し身に着けるあらゆる物の総称。自然物（木の実・石・羽根・花など）から
+        人間の物（コイン・ボタン・紐・装飾品など）まで多岐にわたる。
+        もちはこれを「あくせさりー」と呼ぶ。
+      </p>
+      <p style="margin-top:10px">
+        あくせさりーの量と質は<strong>そのもちの優秀さ・地位の証</strong>として機能する。
+        多く持つほど群れの中での発言力が増し、少ないもちは軽く扱われる傾向がある。
+      </p>
+    </div>
+
+    <div class="card">
+      <h3>社会的な意味</h3>
+      <ul>
+        <li>えらもちを名乗る場合、ある程度のあくせさりーを所持していないと群れから信用されない</li>
+        <li>初対面のもち同士はまずあくせさりーの量を見て相手の格を判断する</li>
+        <li>あくせさりーを奪われることは地位と誇りを同時に失うことと同義であり、激しく抵抗する</li>
+        <li>えだもちはあくせさりーへの執着が特に強く、他のもちの物を「えらもちに管理させろ」と主張することがある</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h3>物々交換</h3>
+      <p>もちはあくせさりーを用いて物々交換を行う。主な場面は以下のとおり。</p>
+      <ul style="margin-top:10px">
+        <li><strong>群れ内の取引</strong>：食べ物・縄張りの優先権などとあくせさりーを交換する</li>
+        <li><strong>群れ間の外交</strong>：あくせさりーを贈ることで友好の意を示す</li>
+        <li><strong>おすそわけのお礼</strong>：おすそわけを施された側がわける側にあくせさりーを渡すことがある。義務ではないが、渡さないと群れ内での評判が下がる場合がある</li>
+        <li><strong>はぐれもちの交渉</strong>：群れへの加入を求める際にあくせさりーを差し出すことで交渉材料にする</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h3>人間の物への特別な価値</h3>
+      <p>
+        人間の持ち物から得たあくせさりーはもちの間で特に高い価値を持つ。同じ形状の自然物より格段に評価される。
+        入手方法によって意味合いが異なる。
+      </p>
+      <ul style="margin-top:10px">
+        <li><strong>盗んだ・侵入して持ち出した物</strong>：「人間を出し抜いた証」として最高の評価を受ける。英雄的に語られる</li>
+        <li><strong>人間から直接もらった物</strong>：「強大な存在と友好な関係にある証」として同様に高い評価を受ける。ぬしを持つもちの象徴ともなる</li>
+        <li>人間の住処への侵入は危険な行為として知られているが、成功時の評価が高いため止まらない</li>
+        <li>失敗して人間に捕まったり追い払われた個体も多い</li>
+      </ul>
+    </div>
+
+  </section>
+
   <!-- 創作ガイドライン -->
   <section class="section" id="guideline">
     <h2 class="section-title"><span class="icon">📋</span>創作ガイドライン</h2>
@@ -927,15 +1066,19 @@
       </div>
       <div class="glossary-item">
         <span class="glossary-term">かおもち</span>
-        <span class="glossary-def">えらもちの取り巻き。便乗して威張る2〜3匹の個体。</span>
+        <span class="glossary-def">えらもちの取り巻き。便乗して威張る2〜3匹の個体。互いに派閥を形成し競い合う。</span>
       </div>
       <div class="glossary-item">
         <span class="glossary-term">はぐれもち</span>
-        <span class="glossary-def">群れを追われた、または持たない単独行動の個体。</span>
+        <span class="glossary-def">群れを離れた個体。長期化するほど群れのルールを忘れ単独行動に適応していく。</span>
       </div>
       <div class="glossary-item">
         <span class="glossary-term">ぬし</span>
         <span class="glossary-def">もちが懐いた人間に使う呼称。依存関係が生まれやすい。</span>
+      </div>
+      <div class="glossary-item">
+        <span class="glossary-term">あくせさりー</span>
+        <span class="glossary-def">もちが収集し身に着けるあらゆる物の総称。量と質が社会的地位に直結する。人間の持ち物は特に価値が高い。</span>
       </div>
       <div class="glossary-item">
         <span class="glossary-term">おすそわけ</span>
@@ -990,31 +1133,77 @@
     </details>
   </section>
 
-  <!-- コメント欄 -->
-  <section class="section" id="comments">
-    <h2 class="section-title"><span class="icon">💬</span>コメント・要望</h2>
-    <p style="font-size:.88rem;color:var(--ink-light);margin-bottom:20px">
-      設定への感想・要望・補足案などお気軽にどうぞ。いただいた意見は設定資料集のアップデートに反映することがあります。
-    </p>
-
-    <div class="comment-form">
-      <input type="text" id="comment-name" placeholder="名前（任意）" maxlength="30">
-      <textarea id="comment-text" rows="4" placeholder="コメントを入力してください（500文字まで）" maxlength="500"></textarea>
-      <button class="btn-submit" id="submit-btn" onclick="submitComment()">送信する</button>
-    </div>
-
-    <div id="comment-list" class="comment-list">
-      <div class="loading">コメントを読み込み中...</div>
-    </div>
-  </section>
-
 </main>
+
+<!-- コメントモーダル -->
+<div id="comment-modal" style="
+  display:none; position:fixed; inset:0; z-index:200;
+  background:rgba(58,42,30,.5); backdrop-filter:blur(4px);
+  align-items:flex-end; justify-content:center;">
+  <div style="
+    background:var(--bg); width:100%; max-width:860px;
+    max-height:85vh; border-radius:20px 20px 0 0;
+    border-top:2px solid var(--border);
+    display:flex; flex-direction:column;
+    overflow:hidden; animation:slideUp .3s ease;">
+
+    <!-- モーダルヘッダー -->
+    <div style="
+      display:flex; align-items:center; justify-content:space-between;
+      padding:18px 24px; border-bottom:1.5px solid var(--border);
+      background:var(--surface); flex-shrink:0;">
+      <span style="font-weight:900; font-size:1.1rem;">💬 コメント・要望</span>
+      <button onclick="closeCommentTab()" style="
+        background:none; border:none; cursor:pointer;
+        font-size:1.4rem; color:var(--ink-light); line-height:1;
+        padding:4px 8px; border-radius:6px; transition:background .2s;"
+        onmouseover="this.style.background='var(--bg2)'"
+        onmouseout="this.style.background='none'">✕</button>
+    </div>
+
+    <!-- スクロール領域 -->
+    <div style="overflow-y:auto; padding:24px; flex:1;">
+      <p style="font-size:.88rem;color:var(--ink-light);margin-bottom:20px">
+        設定への感想・要望・補足案などお気軽にどうぞ。いただいた意見は設定資料集のアップデートに反映することがあります。
+      </p>
+
+      <div class="comment-form">
+        <input type="text" id="comment-name" placeholder="名前（任意）" maxlength="30">
+        <textarea id="comment-text" rows="4" placeholder="コメントを入力してください（500文字まで）" maxlength="500"></textarea>
+        <button class="btn-submit" id="submit-btn" onclick="submitComment()">送信する</button>
+      </div>
+
+      <div id="comment-list" class="comment-list">
+        <div class="loading">コメントを読み込み中...</div>
+      </div>
+    </div>
+  </div>
+</div>
 
 <footer>
   <p>もち設定資料集 ver 1.0</p>
   <p>CC0 パブリックドメイン ― 著作権を放棄します。自由に使用・改変・配布してください。</p>
   <p style="margin-top:8px;font-size:.75rem">東方Projectとは一切関係ありません。</p>
 </footer>
+
+<script>
+  function openCommentTab(e) {
+    e.preventDefault();
+    const modal = document.getElementById('comment-modal');
+    modal.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+  }
+  function closeCommentTab() {
+    const modal = document.getElementById('comment-modal');
+    modal.style.display = 'none';
+    document.body.style.overflow = '';
+  }
+  // モーダル外クリックで閉じる
+  document.addEventListener('click', e => {
+    const modal = document.getElementById('comment-modal');
+    if (e.target === modal) closeCommentTab();
+  });
+</script>
 
 <!-- Firebase -->
 <script type="module">
