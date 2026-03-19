@@ -1,0 +1,1042 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>もち設定資料集</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;500;700;900&family=Noto+Serif+JP:wght@400;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg:        #fdf6ee;
+      --bg2:       #faeee0;
+      --surface:   #fff9f3;
+      --border:    #e8d5c0;
+      --ink:       #3a2a1e;
+      --ink-light: #7a6050;
+      --accent:    #c9613a;
+      --accent2:   #e8a87c;
+      --dark:      #1a1008;
+      --dark-soft: #2d1e12;
+      --kuro:      #2a2030;
+      --shiро:     #f5ede3;
+      --eda:       #8b6914;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Zen Maru Gothic', sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      line-height: 1.8;
+      overflow-x: hidden;
+    }
+
+    /* ── 背景テクスチャ ── */
+    body::before {
+      content: '';
+      position: fixed; inset: 0; z-index: -1;
+      background-image:
+        radial-gradient(circle at 20% 20%, rgba(201,97,58,.06) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(232,168,124,.08) 0%, transparent 50%),
+        url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23c9613a' fill-opacity='0.03'%3E%3Ccircle cx='30' cy='30' r='4'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    }
+
+    /* ── ヘッダー ── */
+    header {
+      position: relative;
+      text-align: center;
+      padding: 80px 24px 60px;
+      overflow: hidden;
+    }
+
+    .header-deco {
+      position: absolute; inset: 0; z-index: 0;
+      display: flex; align-items: center; justify-content: center;
+      pointer-events: none;
+    }
+
+    .mochi-float {
+      font-size: 120px;
+      opacity: .07;
+      animation: floatY 6s ease-in-out infinite;
+      user-select: none;
+    }
+
+    @keyframes floatY {
+      0%,100% { transform: translateY(0); }
+      50%      { transform: translateY(-20px); }
+    }
+
+    header h1 {
+      position: relative; z-index: 1;
+      font-size: clamp(2.4rem, 6vw, 4rem);
+      font-weight: 900;
+      letter-spacing: .05em;
+      color: var(--ink);
+      text-shadow: 3px 3px 0 var(--accent2);
+    }
+
+    header .subtitle {
+      position: relative; z-index: 1;
+      margin-top: 12px;
+      font-size: .95rem;
+      color: var(--ink-light);
+      font-family: 'Noto Serif JP', serif;
+      letter-spacing: .1em;
+    }
+
+    .badge-cc0 {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 4px 14px;
+      border: 1.5px solid var(--accent);
+      border-radius: 999px;
+      font-size: .75rem;
+      color: var(--accent);
+      letter-spacing: .08em;
+      position: relative; z-index: 1;
+    }
+
+    /* ── ナビゲーション ── */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(253,246,238,.92);
+      backdrop-filter: blur(8px);
+      border-bottom: 1.5px solid var(--border);
+      padding: 0 24px;
+      display: flex;
+      gap: 0;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    nav::-webkit-scrollbar { display: none; }
+
+    nav a {
+      flex-shrink: 0;
+      padding: 14px 18px;
+      font-size: .82rem;
+      font-weight: 700;
+      color: var(--ink-light);
+      text-decoration: none;
+      border-bottom: 3px solid transparent;
+      transition: color .2s, border-color .2s;
+      letter-spacing: .05em;
+    }
+    nav a:hover { color: var(--accent); border-bottom-color: var(--accent2); }
+
+    /* ── メインレイアウト ── */
+    main {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 48px 24px 96px;
+    }
+
+    /* ── セクション ── */
+    .section {
+      margin-bottom: 72px;
+      animation: fadeUp .6s ease both;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .section-title {
+      display: flex; align-items: center; gap: 12px;
+      font-size: 1.5rem;
+      font-weight: 900;
+      color: var(--ink);
+      margin-bottom: 24px;
+      padding-bottom: 10px;
+      border-bottom: 2.5px solid var(--border);
+    }
+
+    .section-title .icon {
+      width: 36px; height: 36px;
+      background: var(--accent);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem;
+      flex-shrink: 0;
+    }
+
+    /* ── カード ── */
+    .card {
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: 16px;
+      padding: 28px 32px;
+      margin-bottom: 20px;
+      position: relative;
+      overflow: hidden;
+      transition: transform .2s, box-shadow .2s;
+    }
+    .card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(58,42,30,.08); }
+
+    .card::before {
+      content: '';
+      position: absolute; top: 0; left: 0;
+      width: 4px; height: 100%;
+      background: var(--accent2);
+      border-radius: 4px 0 0 4px;
+    }
+
+    .card h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+      color: var(--ink);
+    }
+
+    .card p, .card li {
+      font-size: .9rem;
+      color: var(--ink-light);
+      line-height: 1.9;
+    }
+
+    .card ul { padding-left: 1.4em; }
+
+    /* ── 種族カード ── */
+    .species-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 20px;
+    }
+
+    .species-card {
+      border-radius: 20px;
+      padding: 28px 24px;
+      position: relative;
+      overflow: hidden;
+      transition: transform .25s, box-shadow .25s;
+    }
+    .species-card:hover { transform: translateY(-4px) scale(1.01); box-shadow: 0 12px 32px rgba(0,0,0,.1); }
+
+    .species-card.shiro {
+      background: linear-gradient(135deg, #fff9f5 0%, #fdeee3 100%);
+      border: 2px solid #f0d4bc;
+    }
+    .species-card.eda {
+      background: linear-gradient(135deg, #fdf8ec 0%, #f5e8c0 100%);
+      border: 2px solid #d4b870;
+    }
+    .species-card.kuro {
+      background: linear-gradient(135deg, #1e1828 0%, #2d2040 100%);
+      border: 2px solid #4a3860;
+      color: #d0c8e0;
+    }
+    .species-card.kuro h3 { color: #e8e0f0; }
+    .species-card.kuro p  { color: #a898c0; }
+    .species-card.kuro .species-tag { background: rgba(255,255,255,.1); color: #c8b8e8; }
+
+    .species-icon {
+      font-size: 3rem;
+      margin-bottom: 12px;
+      display: block;
+      animation: floatY 4s ease-in-out infinite;
+    }
+
+    .species-card h3 {
+      font-size: 1.25rem;
+      font-weight: 900;
+      margin-bottom: 6px;
+    }
+
+    .species-tag {
+      display: inline-block;
+      padding: 2px 10px;
+      background: rgba(201,97,58,.1);
+      border-radius: 999px;
+      font-size: .72rem;
+      color: var(--accent);
+      margin-bottom: 12px;
+      font-weight: 700;
+    }
+
+    .species-card p { font-size: .85rem; line-height: 1.8; }
+
+    .speech-bubble {
+      margin-top: 14px;
+      padding: 10px 14px;
+      border-radius: 10px;
+      font-size: .8rem;
+      font-style: italic;
+      line-height: 1.6;
+    }
+    .shiro  .speech-bubble { background: rgba(201,97,58,.08); color: var(--accent); }
+    .eda    .speech-bubble { background: rgba(139,105,20,.1);  color: var(--eda); }
+    .kuro   .speech-bubble { background: rgba(255,255,255,.06); color: #c0b0d8; }
+
+    /* ── 死生観 ── */
+    .shikai-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+    @media (max-width: 600px) { .shikai-grid { grid-template-columns: 1fr; } }
+
+    .shikai-card {
+      padding: 20px;
+      border-radius: 14px;
+      font-size: .88rem;
+    }
+    .shikai-card.know {
+      background: #edf7f0;
+      border: 1.5px solid #a8d8b0;
+    }
+    .shikai-card.know h4 { color: #2d6e40; margin-bottom: 8px; font-weight: 700; }
+    .shikai-card.know li { color: #3a5e44; }
+
+    .shikai-card.dontknow {
+      background: #fdeee8;
+      border: 1.5px solid #f0b8a0;
+    }
+    .shikai-card.dontknow h4 { color: #8b3a1e; margin-bottom: 8px; font-weight: 700; }
+    .shikai-card.dontknow li { color: #7a3820; }
+
+    .shikai-card ul { padding-left: 1.2em; }
+    .shikai-card li { margin-bottom: 4px; line-height: 1.7; }
+
+    .ritual-box {
+      background: var(--dark-soft);
+      color: #e8d8c8;
+      border-radius: 16px;
+      padding: 28px 32px;
+      margin-top: 20px;
+    }
+    .ritual-box h4 {
+      color: var(--accent2);
+      font-size: 1.1rem;
+      font-weight: 900;
+      margin-bottom: 16px;
+      letter-spacing: .08em;
+    }
+    .ritual-step {
+      display: flex; gap: 14px;
+      margin-bottom: 14px;
+      align-items: flex-start;
+    }
+    .ritual-num {
+      width: 28px; height: 28px;
+      background: var(--accent);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: .75rem;
+      font-weight: 900;
+      color: white;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .ritual-step p { font-size: .88rem; line-height: 1.8; color: #d0c0b0; }
+    .ritual-keyword {
+      display: inline-block;
+      margin-top: 16px;
+      padding: 8px 20px;
+      background: rgba(201,97,58,.2);
+      border: 1px solid var(--accent);
+      border-radius: 8px;
+      font-size: .9rem;
+      font-weight: 700;
+      color: var(--accent2);
+      letter-spacing: .1em;
+    }
+
+    /* ── ガイドライン ── */
+    .guideline-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    @media (max-width: 600px) { .guideline-grid { grid-template-columns: 1fr; } }
+
+    .gl-ok {
+      background: #edf7f0;
+      border: 1.5px solid #a8d8b0;
+      border-radius: 14px;
+      padding: 20px 24px;
+    }
+    .gl-ok h4 { color: #2d6e40; margin-bottom: 10px; font-weight: 900; }
+    .gl-ok li { color: #3a5e44; font-size: .88rem; line-height: 1.8; margin-bottom: 4px; }
+
+    .gl-ng {
+      background: #fdeee8;
+      border: 1.5px solid #f0b8a0;
+      border-radius: 14px;
+      padding: 20px 24px;
+    }
+    .gl-ng h4 { color: #8b3a1e; margin-bottom: 10px; font-weight: 900; }
+    .gl-ng li { color: #7a3820; font-size: .88rem; line-height: 1.8; margin-bottom: 4px; }
+
+    .gl-ok ul, .gl-ng ul { padding-left: 1.4em; }
+
+    /* ── タグ案内 ── */
+    .tag-list {
+      display: flex; flex-wrap: wrap; gap: 10px;
+      margin-top: 16px;
+    }
+    .tag-pill {
+      padding: 6px 18px;
+      border-radius: 999px;
+      font-size: .85rem;
+      font-weight: 700;
+      letter-spacing: .05em;
+      cursor: pointer;
+      transition: transform .15s;
+    }
+    .tag-pill:hover { transform: scale(1.05); }
+    .tag-pill.main  { background: var(--accent); color: white; }
+    .tag-pill.sub   { background: var(--bg2); border: 1.5px solid var(--border); color: var(--ink); }
+    .tag-pill.dark  { background: var(--dark-soft); color: #e8d8c8; }
+
+    /* ── 用語集 ── */
+    .glossary-item {
+      display: grid;
+      grid-template-columns: 140px 1fr;
+      gap: 0;
+      border-bottom: 1px solid var(--border);
+      padding: 16px 0;
+      font-size: .9rem;
+    }
+    .glossary-item:last-child { border-bottom: none; }
+    .glossary-term {
+      font-weight: 700;
+      color: var(--accent);
+      padding-right: 16px;
+    }
+    .glossary-def { color: var(--ink-light); line-height: 1.8; }
+
+    /* ── Q&A ── */
+    details {
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      margin-bottom: 12px;
+      overflow: hidden;
+      transition: box-shadow .2s;
+    }
+    details[open] { box-shadow: 0 4px 16px rgba(58,42,30,.07); }
+
+    summary {
+      padding: 16px 20px;
+      font-weight: 700;
+      font-size: .92rem;
+      cursor: pointer;
+      list-style: none;
+      display: flex; align-items: center; gap: 10px;
+      background: var(--surface);
+      transition: background .2s;
+    }
+    summary:hover { background: var(--bg2); }
+    summary::before {
+      content: '▶';
+      font-size: .65rem;
+      color: var(--accent);
+      transition: transform .2s;
+      flex-shrink: 0;
+    }
+    details[open] summary::before { transform: rotate(90deg); }
+
+    .qa-answer {
+      padding: 16px 20px;
+      font-size: .88rem;
+      color: var(--ink-light);
+      line-height: 1.9;
+      background: var(--bg);
+      border-top: 1px solid var(--border);
+    }
+
+    /* ── コメント欄 ── */
+    .comment-form {
+      display: flex; flex-direction: column; gap: 12px;
+      margin-bottom: 32px;
+    }
+    .comment-form input,
+    .comment-form textarea {
+      width: 100%;
+      padding: 12px 16px;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      background: var(--surface);
+      font-family: 'Zen Maru Gothic', sans-serif;
+      font-size: .9rem;
+      color: var(--ink);
+      resize: vertical;
+      transition: border-color .2s;
+    }
+    .comment-form input:focus,
+    .comment-form textarea:focus {
+      outline: none;
+      border-color: var(--accent2);
+    }
+
+    .btn-submit {
+      align-self: flex-end;
+      padding: 10px 28px;
+      background: var(--accent);
+      color: white;
+      border: none;
+      border-radius: 999px;
+      font-family: 'Zen Maru Gothic', sans-serif;
+      font-size: .9rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background .2s, transform .15s;
+    }
+    .btn-submit:hover { background: #b0502e; transform: translateY(-1px); }
+    .btn-submit:disabled { background: var(--border); cursor: not-allowed; transform: none; }
+
+    .comment-list { display: flex; flex-direction: column; gap: 14px; }
+
+    .comment-item {
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      padding: 16px 20px;
+      animation: fadeUp .4s ease both;
+    }
+    .comment-meta {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 8px;
+    }
+    .comment-name { font-weight: 700; font-size: .88rem; color: var(--accent); }
+    .comment-date { font-size: .75rem; color: var(--ink-light); }
+    .comment-text { font-size: .88rem; color: var(--ink-light); line-height: 1.8; }
+
+    .comment-empty {
+      text-align: center;
+      padding: 32px;
+      color: var(--ink-light);
+      font-size: .9rem;
+      border: 1.5px dashed var(--border);
+      border-radius: 12px;
+    }
+
+    /* ── フッター ── */
+    footer {
+      text-align: center;
+      padding: 40px 24px;
+      border-top: 1.5px solid var(--border);
+      font-size: .8rem;
+      color: var(--ink-light);
+      line-height: 2;
+    }
+
+    /* ── ローディング ── */
+    .loading {
+      text-align: center;
+      padding: 20px;
+      color: var(--ink-light);
+      font-size: .85rem;
+    }
+
+    /* ── レスポンシブ ── */
+    @media (max-width: 600px) {
+      .glossary-item { grid-template-columns: 1fr; gap: 4px; }
+      .card { padding: 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ヘッダー -->
+<header>
+  <div class="header-deco">
+    <span class="mochi-float">🫓</span>
+  </div>
+  <h1>もち　設定資料集</h1>
+  <p class="subtitle">架空生物「もち」の公式設定資料　ver 1.0</p>
+  <span class="badge-cc0">CC0 パブリックドメイン ― 自由に使用可</span>
+</header>
+
+<!-- ナビゲーション -->
+<nav>
+  <a href="#overview">概要</a>
+  <a href="#ecology">基本生態</a>
+  <a href="#species">種族</a>
+  <a href="#society">社会構造</a>
+  <a href="#shikai">死生観</a>
+  <a href="#guideline">創作ガイドライン</a>
+  <a href="#tags">タグ案内</a>
+  <a href="#glossary">用語集</a>
+  <a href="#qa">Q&amp;A</a>
+  <a href="#comments">コメント</a>
+</nav>
+
+<main>
+
+  <!-- 概要 -->
+  <section class="section" id="overview">
+    <h2 class="section-title"><span class="icon">📖</span>概要</h2>
+    <div class="card">
+      <h3>もちとは</h3>
+      <p>
+        山や森に自然発生する、餅のような柔らかい体を持つ小さな架空生物。
+        人間の肌色に近い体色を持ち、髪やアクセサリーで個体を区別する。
+        幼児程度の知性と豊かな感情を持ち、片言で話すことができる。
+        語尾に「〜もち」をつけるのが特徴。
+      </p>
+    </div>
+    <div class="card">
+      <h3>この資料集について</h3>
+      <p>
+        「もち創作」ジャンルの共通設定を定義する公式資料集です。
+        CC0（パブリックドメイン）として公開しており、商用・非商用を問わず
+        誰でも自由に創作・改変・再配布することができます。
+        設定の骨格（形態・知性・死生観）はコミュニティの共通土台として維持を推奨しますが、
+        独自設定の追加は大歓迎です。
+      </p>
+    </div>
+  </section>
+
+  <!-- 基本生態 -->
+  <section class="section" id="ecology">
+    <h2 class="section-title"><span class="icon">🌿</span>基本生態</h2>
+
+    <div class="card">
+      <h3>形態</h3>
+      <ul>
+        <li>体型：楕円形。直径15cm前後</li>
+        <li>質感：やわらかい餅・マシュマロに近い。触ると少し沈む</li>
+        <li>顔：目と口のみ。耳・鼻はない</li>
+        <li>体色：人間の肌色に準ずる（白め・小麦色・褐色など個体差あり）</li>
+        <li>髪：ほぼ全個体に生えている。色・長さ・形は個体によって様々</li>
+        <li>アクセサリー：自分で拾ってきたものを身につける習性。執着が強い</li>
+        <li>四肢：なし。移動はぴょんぴょん跳ねる</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h3>知性・感情・言語</h3>
+      <ul>
+        <li>知性は幼児（3〜4歳）程度</li>
+        <li>喜怒哀楽は豊かで表情に素直に出る</li>
+        <li>記憶力は低い。ひどい目に遭っても数時間で忘れることが多い</li>
+        <li>語尾に「〜もち」をつけて話す</li>
+        <li>難しい言葉を使おうとして間違えることが多い（知ったかぶり）</li>
+        <li>性格によって話し方のトーンが大きく変わる</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h3>食性・弱点</h3>
+      <ul>
+        <li>甘いもの・木の実・花が好物。食べ物の前では判断力がゼロになる</li>
+        <li>腐ったものを食べると体が変色して弱る</li>
+        <li>寒さ・乾燥に弱い</li>
+        <li>強い衝撃で気絶する</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h3>繁殖・寿命</h3>
+      <ul>
+        <li>温かい季節に卵（豆大）を産む。2週間で孵化</li>
+        <li>成体の寿命は約1年（短命）</li>
+        <li>親はこもちに強い愛着を持つ</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 種族 -->
+  <section class="section" id="species">
+    <h2 class="section-title"><span class="icon">🔍</span>種族</h2>
+    <div class="species-grid">
+
+      <div class="species-card shiro">
+        <span class="species-icon">🌸</span>
+        <h3>しろもち</h3>
+        <span class="species-tag">基本種 / 草食</span>
+        <p>もちの中で最もポピュラーな基本種。感情が顔と語尾に素直に出る。食べ物に目がなく、すぐ騙される。人間に懐きやすくぬし依存になりやすい。仲間思いだがこもちには特に献身的。</p>
+        <div class="speech-bubble">「おいしいもち〜！！」<br>「ぬしぃ、こっちみてほしいもち……」</div>
+      </div>
+
+      <div class="species-card eda">
+        <span class="species-icon">👑</span>
+        <h3>えだもち</h3>
+        <span class="species-tag">高飛車種 / 雑食</span>
+        <p>自然発生的にリーダーを名乗る種。知ったかぶりが激しく失敗を認めない。実はびびりで強いものには急におとなしくなる。食べ物の前では威厳が完全に崩れる。</p>
+        <div class="speech-bubble">「このもちがゆるしてやるもち」<br>「ち、ちがうもち！これはさくせんもち！」</div>
+      </div>
+
+      <div class="species-card kuro">
+        <span class="species-icon">🌑</span>
+        <h3>くろもち</h3>
+        <span class="species-tag">捕食種 / 単独行動</span>
+        <p>群れに属さない異質な捕食種。感情表現が極めて少なく、他のもちを食料として認識する。知性は3種の中で最も高い。まれに人間に懐いた個体は非常に忠実になる。</p>
+        <div class="speech-bubble">「……もち」<br>「おいしそうもち」（獲物を見て淡々と）</div>
+      </div>
+
+    </div>
+
+    <div class="card" style="margin-top:20px">
+      <h3>3種の関係</h3>
+      <p>
+        しろもちはくろもちに捕食される。えだもちはしろもちを支配しようとするが、くろもちには勝てない。
+        くろもちはえだもちを「不味い」と思っている（本能的に避ける）。
+        この三角関係だけでコメディ・シリアス両方の物語が自然に成立する。
+      </p>
+    </div>
+  </section>
+
+  <!-- 社会構造 -->
+  <section class="section" id="society">
+    <h2 class="section-title"><span class="icon">🏘️</span>社会構造</h2>
+
+    <div class="card">
+      <h3>群れの階層</h3>
+      <ul>
+        <li><strong>えらもち（1匹）</strong>：自称リーダー。実力より声の大きさで決まる</li>
+        <li><strong>かおもち（2〜3匹）</strong>：えらもちの取り巻き。便乗して威張る</li>
+        <li><strong>ただもち（多数）</strong>：一般個体</li>
+        <li><strong>はぐれもち</strong>：群れを追われた個体。単独行動</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h3>群れのルール（慣習）</h3>
+      <ul>
+        <li>いちばんおいしいものはえらもちのもの</li>
+        <li>はじめてみつけたものはみつけたもちのもの</li>
+        <li>なかまのもちをぬしに告げ口してはいけない（たいていやぶられる）</li>
+        <li><strong>こもちはみんなでまもる</strong>（唯一ちゃんと守られるルール）</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h3>人間（ぬし）との関係プロセス</h3>
+      <ul>
+        <li>①発見期：最初は警戒して逃げる。食べ物があると近づく</li>
+        <li>②接触期：食べ物をもらうと一気に懐く。「ぬし」と認定</li>
+        <li>③依存期：ぬしがいないと不安。他のもちより自分を優先しろと要求</li>
+        <li>④慣れ腐れ期：要求がエスカレート。感謝を忘れ命令口調になる個体も</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 死生観 -->
+  <section class="section" id="shikai">
+    <h2 class="section-title"><span class="icon">🕯️</span>死生観</h2>
+
+    <div class="shikai-grid">
+      <div class="shikai-card know">
+        <h4>✓ わかっていること</h4>
+        <ul>
+          <li>死ぬと動かなくなること</li>
+          <li>死んだ仲間は戻ってこないこと</li>
+          <li>死はこわいものだということ</li>
+          <li>くろもちに食べられると死ぬこと</li>
+        </ul>
+      </div>
+      <div class="shikai-card dontknow">
+        <h4>✗ わかっていないこと</h4>
+        <ul>
+          <li>自分がいつ死ぬかの現実的な予測</li>
+          <li>痛みと死の因果関係</li>
+          <li>「このもちはしなないもち」という<br>根拠のない確信</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>種別の歪み</h3>
+      <ul>
+        <li><strong>しろもち</strong>：楽観的な無自覚。「だいじょうぶもち」と思い込む</li>
+        <li><strong>えだもち</strong>：プライドによる否定。内心は怖いが絶対認めない</li>
+        <li><strong>くろもち</strong>：死を正確に理解している唯一の種。だからこそ他を先に食う</li>
+      </ul>
+    </div>
+
+    <div class="ritual-box">
+      <h4>弔い文化：「かえしもち」</h4>
+      <p style="font-size:.85rem;color:#c0b0a0;margin-bottom:18px">
+        死を「もとのところに帰った」と解釈する文化。
+        悲しみながらも受け入れるための知恵として自然発生した。
+      </p>
+
+      <div class="ritual-step">
+        <div class="ritual-num">1</div>
+        <p><strong>ねかせる</strong>：死んだもちを柔らかい草や花の上に横たえる。硬い地面に置くことを本能的に嫌がる。</p>
+      </div>
+      <div class="ritual-step">
+        <div class="ritual-num">2</div>
+        <p><strong>よぶ</strong>：名前を呼び続ける。返事がないことを確認する。これが死の確認行為になっている。</p>
+      </div>
+      <div class="ritual-step">
+        <div class="ritual-num">3</div>
+        <p><strong>おくる</strong>：群れ全員で声を合わせて言う。</p>
+      </div>
+      <div class="ritual-step">
+        <div class="ritual-num">4</div>
+        <p><strong>わすれる</strong>：翌日には日常に戻る。記憶力の低さが悲しみを長引かせない仕組みになっている。</p>
+      </div>
+
+      <div class="ritual-keyword">「かえったもち　よかったもち」</div>
+      <p style="font-size:.8rem;color:#a090b8;margin-top:12px">
+        ※ こもちの死だけは翌日になっても群れ全体が静かになる。えだもちでさえ威張らなくなる唯一の例外。
+      </p>
+    </div>
+  </section>
+
+  <!-- 創作ガイドライン -->
+  <section class="section" id="guideline">
+    <h2 class="section-title"><span class="icon">📋</span>創作ガイドライン</h2>
+    <div class="guideline-grid">
+      <div class="gl-ok">
+        <h4>✅ 自由にやっていいこと</h4>
+        <ul>
+          <li>独自の個体・群れの設定追加</li>
+          <li>コメディ・ダーク問わずどんなトーンでもOK</li>
+          <li>独自の名前・口癖の設定</li>
+          <li>他の創作世界との融合</li>
+          <li>商用・非商用問わず利用可</li>
+          <li>設定の改変・拡張</li>
+        </ul>
+      </div>
+      <div class="gl-ng">
+        <h4>❌ お願いしたいこと・禁止事項</h4>
+        <ul>
+          <li>東方Projectキャラとの混同・類似名称の使用</li>
+          <li>実在する個人・団体を傷つける内容</li>
+          <li>過激な表現には年齢制限表記を推奨</li>
+          <li>この資料集自体を「公式の続き」として無断改変した資料の再配布</li>
+        </ul>
+      </div>
+    </div>
+    <div class="card" style="margin-top:16px">
+      <h3>設定の骨格について</h3>
+      <p>
+        形態（餅質感・肌色・髪アクセサリー）・知性レベル（幼児程度）・語尾「〜もち」・死生観（かえしもち文化）は
+        コミュニティ共通の土台として維持を推奨します。
+        これらを守ることで、異なる創作者の作品が同じ世界の話として読める一体感が生まれます。
+      </p>
+    </div>
+  </section>
+
+  <!-- タグ案内 -->
+  <section class="section" id="tags">
+    <h2 class="section-title"><span class="icon">🏷️</span>ジャンルタグ案内</h2>
+    <div class="card">
+      <h3>推奨ハッシュタグ（X / その他SNS）</h3>
+      <div class="tag-list">
+        <span class="tag-pill main">#もち創作</span>
+        <span class="tag-pill main">#もち虐</span>
+        <span class="tag-pill main">#もち保護</span>
+        <span class="tag-pill sub">#しろもち</span>
+        <span class="tag-pill sub">#えだもち</span>
+        <span class="tag-pill dark">#くろもち</span>
+        <span class="tag-pill sub">#もち小説</span>
+        <span class="tag-pill sub">#もち動画</span>
+        <span class="tag-pill sub">#もちイラスト</span>
+        <span class="tag-pill dark">#かえったもちよかったもち</span>
+      </div>
+      <p style="margin-top:16px;font-size:.85rem;color:var(--ink-light)">
+        ※ グレーのタグはダーク・シリアス系作品向けの目印として使うと読者が内容を事前に把握できます。
+      </p>
+    </div>
+  </section>
+
+  <!-- 用語集 -->
+  <section class="section" id="glossary">
+    <h2 class="section-title"><span class="icon">📚</span>用語集</h2>
+    <div class="card">
+      <div class="glossary-item">
+        <span class="glossary-term">もち</span>
+        <span class="glossary-def">本資料で定義する架空生物の種族名。</span>
+      </div>
+      <div class="glossary-item">
+        <span class="glossary-term">こもち</span>
+        <span class="glossary-def">もちの子供個体。群れ全体で保護される唯一の存在。</span>
+      </div>
+      <div class="glossary-item">
+        <span class="glossary-term">えらもち</span>
+        <span class="glossary-def">群れの自称リーダー。実力ではなく声の大きさで決まることが多い。</span>
+      </div>
+      <div class="glossary-item">
+        <span class="glossary-term">かおもち</span>
+        <span class="glossary-def">えらもちの取り巻き。便乗して威張る2〜3匹の個体。</span>
+      </div>
+      <div class="glossary-item">
+        <span class="glossary-term">はぐれもち</span>
+        <span class="glossary-def">群れを追われた、または持たない単独行動の個体。</span>
+      </div>
+      <div class="glossary-item">
+        <span class="glossary-term">ぬし</span>
+        <span class="glossary-def">もちが懐いた人間に使う呼称。依存関係が生まれやすい。</span>
+      </div>
+      <div class="glossary-item">
+        <span class="glossary-term">かえしもち</span>
+        <span class="glossary-def">死を「もとの場所に帰った」と解釈するもちの弔い儀式。</span>
+      </div>
+      <div class="glossary-item">
+        <span class="glossary-term">もち虐</span>
+        <span class="glossary-def">もちが理不尽な目に遭う創作の総称ジャンル名。</span>
+      </div>
+      <div class="glossary-item">
+        <span class="glossary-term">もち保護</span>
+        <span class="glossary-def">もちを守る・育てる創作の総称ジャンル名。</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Q&A -->
+  <section class="section" id="qa">
+    <h2 class="section-title"><span class="icon">❓</span>Q&amp;A</h2>
+
+    <details>
+      <summary>もちはどこで発生しますか？</summary>
+      <div class="qa-answer">山や森など自然豊かな場所に自然発生します。具体的なメカニズムは不明で、もち自身も「もとのところからきたもち」としか認識していません。都市部ではほとんど見られませんが、公園などで稀に目撃されます。</div>
+    </details>
+
+    <details>
+      <summary>くろもちは悪者ですか？</summary>
+      <div class="qa-answer">くろもちは「捕食種」であり、悪役として描くことも保護される存在として描くことも創作者の自由です。設定上は単に食物連鎖の上位に位置する種族であり、善悪の判断は作品に委ねられています。人間に懐いた個体は非常に忠実になるというレア設定もあります。</div>
+    </details>
+
+    <details>
+      <summary>設定を変えて創作してもいいですか？</summary>
+      <div class="qa-answer">基本的には自由です。CC0なので改変・再配布も問題ありません。ただし、形態・語尾「〜もち」・かえしもち文化などのコア設定を保つと、他の創作者の作品と世界観の一体感が生まれやすくなります。</div>
+    </details>
+
+    <details>
+      <summary>「えだもち」という名前の由来は？</summary>
+      <div class="qa-answer">「えらいもち」を縮めた呼称が定着したものです。正式名称は「えだもち種」ですが、創作上は「えらもち」「えだもち」どちらの呼び方も使われます。</div>
+    </details>
+
+    <details>
+      <summary>もちに固有名詞をつけていいですか？</summary>
+      <div class="qa-answer">もちろんです！固有名詞をつけた個体キャラクターを作ることはジャンルの拡張につながります。名前の付け方に決まりはありませんが、もちが自分で発音できそうなシンプルな名前が設定と馴染みやすいです。</div>
+    </details>
+  </section>
+
+  <!-- コメント欄 -->
+  <section class="section" id="comments">
+    <h2 class="section-title"><span class="icon">💬</span>コメント・要望</h2>
+    <p style="font-size:.88rem;color:var(--ink-light);margin-bottom:20px">
+      設定への感想・要望・補足案などお気軽にどうぞ。いただいた意見は設定資料集のアップデートに反映することがあります。
+    </p>
+
+    <div class="comment-form">
+      <input type="text" id="comment-name" placeholder="名前（任意）" maxlength="30">
+      <textarea id="comment-text" rows="4" placeholder="コメントを入力してください（500文字まで）" maxlength="500"></textarea>
+      <button class="btn-submit" id="submit-btn" onclick="submitComment()">送信する</button>
+    </div>
+
+    <div id="comment-list" class="comment-list">
+      <div class="loading">コメントを読み込み中...</div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <p>もち設定資料集 ver 1.0</p>
+  <p>CC0 パブリックドメイン ― 著作権を放棄します。自由に使用・改変・配布してください。</p>
+  <p style="margin-top:8px;font-size:.75rem">東方Projectとは一切関係ありません。</p>
+</footer>
+
+<!-- Firebase -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
+  import { getAnalytics }  from "https://www.gstatic.com/firebasejs/12.10.0/firebase-analytics.js";
+  import { getFirestore, collection, addDoc, getDocs, orderBy, query, serverTimestamp }
+    from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey:            "AIzaSyANr1lAQXWi2qcOpP5sHK20dP_WYGe88vI",
+    authDomain:        "mochi-9ce35.firebaseapp.com",
+    projectId:         "mochi-9ce35",
+    storageBucket:     "mochi-9ce35.firebasestorage.app",
+    messagingSenderId: "837037756383",
+    appId:             "1:837037756383:web:c64125c8f0d10a78c2fe6a",
+    measurementId:     "G-CZK66T3SD9"
+  };
+
+  const app       = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);          // Analytics有効化
+  const db        = getFirestore(app);
+
+  // ── コメント読み込み ──
+  async function loadComments() {
+    const list = document.getElementById("comment-list");
+    try {
+      const q    = query(collection(db, "mochi-comments"), orderBy("createdAt", "desc"));
+      const snap = await getDocs(q);
+
+      if (snap.empty) {
+        list.innerHTML = '<div class="comment-empty">まだコメントはありません。最初のコメントを書いてみよう！</div>';
+        return;
+      }
+
+      list.innerHTML = "";
+      snap.forEach(doc => {
+        const d = doc.data();
+        const date = d.createdAt?.toDate
+          ? d.createdAt.toDate().toLocaleDateString("ja-JP")
+          : "日付不明";
+        list.innerHTML += `
+          <div class="comment-item">
+            <div class="comment-meta">
+              <span class="comment-name">${escapeHtml(d.name || "名無しもち")}</span>
+              <span class="comment-date">${date}</span>
+            </div>
+            <div class="comment-text">${escapeHtml(d.text)}</div>
+          </div>`;
+      });
+    } catch (e) {
+      list.innerHTML = '<div class="comment-empty">コメントの読み込みに失敗しました。<br>Firebaseの設定を確認してください。</div>';
+    }
+  }
+
+  // ── コメント送信 ──
+  window.submitComment = async function () {
+    const nameEl = document.getElementById("comment-name");
+    const textEl = document.getElementById("comment-text");
+    const btn    = document.getElementById("submit-btn");
+
+    const name = nameEl.value.trim();
+    const text = textEl.value.trim();
+
+    if (!text) { alert("コメントを入力してください。"); return; }
+    if (text.length > 500) { alert("500文字以内で入力してください。"); return; }
+
+    btn.disabled    = true;
+    btn.textContent = "送信中…";
+
+    try {
+      await addDoc(collection(db, "mochi-comments"), {
+        name:      name || "名無しもち",
+        text,
+        createdAt: serverTimestamp()
+      });
+      nameEl.value = "";
+      textEl.value = "";
+      await loadComments();
+    } catch (e) {
+      alert("送信に失敗しました。しばらく経ってから再試行してください。");
+    } finally {
+      btn.disabled    = false;
+      btn.textContent = "送信する";
+    }
+  };
+
+  // XSS対策
+  function escapeHtml(str) {
+    return String(str)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#39;");
+  }
+
+  loadComments();
+</script>
+
+</body>
+</html>
