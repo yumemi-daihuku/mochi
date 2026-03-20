@@ -102,38 +102,112 @@
       position: relative; z-index: 1;
     }
 
-    /* ── ナビゲーション ── */
-    nav {
-      position: sticky; top: 0; z-index: 100;
-      background: rgba(253,246,238,.92);
-      backdrop-filter: blur(8px);
-      border-bottom: 1.5px solid var(--border);
-      padding: 0 24px;
+    /* ── サイドバーナビゲーション ── */
+    .layout {
       display: flex;
-      gap: 0;
-      overflow-x: auto;
-      scrollbar-width: none;
+      align-items: flex-start;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 16px;
     }
-    nav::-webkit-scrollbar { display: none; }
+
+    nav {
+      position: sticky;
+      top: 24px;
+      width: 200px;
+      flex-shrink: 0;
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: 16px;
+      padding: 16px 0;
+      max-height: calc(100vh - 48px);
+      overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: var(--border) transparent;
+      margin-top: 32px;
+    }
+    nav::-webkit-scrollbar { width: 4px; }
+    nav::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+    .nav-label {
+      font-size: .68rem;
+      font-weight: 900;
+      color: var(--ink-light);
+      letter-spacing: .12em;
+      padding: 10px 18px 4px;
+      text-transform: uppercase;
+    }
 
     nav a {
-      flex-shrink: 0;
-      padding: 14px 18px;
+      display: block;
+      padding: 8px 18px;
       font-size: .82rem;
       font-weight: 700;
       color: var(--ink-light);
       text-decoration: none;
-      border-bottom: 3px solid transparent;
-      transition: color .2s, border-color .2s;
-      letter-spacing: .05em;
+      border-left: 3px solid transparent;
+      transition: color .2s, border-color .2s, background .2s;
+      letter-spacing: .03em;
+      line-height: 1.4;
     }
-    nav a:hover { color: var(--accent); border-bottom-color: var(--accent2); }
+    nav a:hover {
+      color: var(--accent);
+      border-left-color: var(--accent2);
+      background: var(--bg2);
+    }
+    nav a.active {
+      color: var(--accent);
+      border-left-color: var(--accent);
+      background: var(--bg2);
+    }
+
+    /* モバイル用ハンバーガー */
+    .nav-toggle {
+      display: none;
+      position: fixed;
+      bottom: 24px; right: 24px;
+      z-index: 150;
+      width: 52px; height: 52px;
+      background: var(--accent);
+      color: white;
+      border: none; border-radius: 50%;
+      font-size: 1.3rem;
+      cursor: pointer;
+      box-shadow: 0 4px 16px rgba(201,97,58,.4);
+      transition: transform .2s;
+    }
+    .nav-toggle:hover { transform: scale(1.08); }
 
     /* ── メインレイアウト ── */
     main {
-      max-width: 860px;
-      margin: 0 auto;
-      padding: 48px 24px 96px;
+      flex: 1;
+      min-width: 0;
+      padding: 32px 24px 96px 32px;
+    }
+
+    @media (max-width: 768px) {
+      .layout { display: block; padding: 0; }
+      nav {
+        position: fixed;
+        top: 0; left: -220px;
+        width: 220px; height: 100vh;
+        max-height: 100vh;
+        border-radius: 0 16px 16px 0;
+        margin-top: 0;
+        z-index: 120;
+        transition: left .3s ease;
+        box-shadow: 4px 0 24px rgba(58,42,30,.15);
+      }
+      nav.open { left: 0; }
+      .nav-overlay {
+        display: none;
+        position: fixed; inset: 0;
+        background: rgba(58,42,30,.4);
+        z-index: 110;
+      }
+      .nav-overlay.open { display: block; }
+      .nav-toggle { display: flex; align-items: center; justify-content: center; }
+      main { padding: 24px 16px 96px; }
     }
 
     /* ── セクション ── */
@@ -558,19 +632,32 @@
   <span class="badge-cc0">CC0 パブリックドメイン ― 自由に使用可</span>
 </header>
 
-<!-- ナビゲーション -->
-<nav>
+<!-- モバイル用オーバーレイ -->
+<div class="nav-overlay" id="nav-overlay" onclick="closeNav()"></div>
+
+<!-- モバイル用トグルボタン -->
+<button class="nav-toggle" onclick="toggleNav()">☰</button>
+
+<div class="layout">
+
+<!-- サイドバーナビゲーション -->
+<nav id="sidebar">
+  <div class="nav-label">基本設定</div>
   <a href="#overview">概要</a>
   <a href="#ecology">基本生態</a>
   <a href="#species">種族</a>
+  <a href="#body">身体・感覚</a>
+  <div class="nav-label">社会</div>
   <a href="#society">社会構造</a>
+  <a href="#accessory">あくせさりー</a>
+  <a href="#environment">環境適応</a>
+  <div class="nav-label">心理・生死</div>
+  <a href="#psychology">心理・感情</a>
   <a href="#shikai">死生観</a>
   <a href="#osuso">おすそわけ</a>
-  <a href="#accessory">あくせさりー</a>
-  <a href="#body">身体・感覚</a>
-  <a href="#environment">環境適応</a>
-  <a href="#psychology">心理・感情</a>
+  <div class="nav-label">種族詳細</div>
   <a href="#kuro-detail">くろもち詳細</a>
+  <div class="nav-label">創作情報</div>
   <a href="#guideline">創作ガイドライン</a>
   <a href="#tags">タグ案内</a>
   <a href="#glossary">用語集</a>
@@ -646,9 +733,12 @@
     <div class="card">
       <h3>繁殖・寿命</h3>
       <ul>
-        <li>温かい季節に卵（豆大）を産む。2週間で孵化</li>
         <li>成体の寿命は約1年（短命）</li>
         <li>親はこもちに強い愛着を持つ</li>
+        <li>もちには雌雄がある。種族を超えた交尾が可能</li>
+        <li>雄には男性器（ぺにぺに）、雌には女性器（まむまむ）がある。交尾の方法は哺乳類と同じ</li>
+        <li>交尾後、雌が卵（豆大）を産む。温かい季節に産まれやすく、2週間で孵化する</li>
+        <li>生まれてくる個体の種族は<strong>雌側の種族</strong>になる（例：しろもちの雌とえだもちの雄の子はしろもちになる）</li>
       </ul>
     </div>
   </section>
@@ -910,7 +1000,7 @@
 
       <div class="ritual-step">
         <div class="ritual-num">!</div>
-        <p><strong>発生条件</strong>：おすそわけ中に外部から引き剥がされる、または施す側が意識を失う・死亡する。</p>
+        <p><strong>発生条件</strong>：施す側・受ける側のどちらか一方または両方が意識を失う・死亡する。</p>
       </div>
       <div class="ritual-step">
         <div class="ritual-num">!</div>
@@ -1286,9 +1376,36 @@
       <summary>もちに固有名詞をつけていいですか？</summary>
       <div class="qa-answer">もちろんです！固有名詞をつけた個体キャラクターを作ることはジャンルの拡張につながります。名前の付け方に決まりはありませんが、もちが自分で発音できそうなシンプルな名前が設定と馴染みやすいです。</div>
     </details>
+
+    <details>
+      <summary>おすそわけ中にどちらかが眠ってしまった場合、癒着は発生しますか？</summary>
+      <div class="qa-answer">基本的に、もちはおすそわけ中に眠ることはありません。ただし、眠らなければ命に関わる状態になった場合、または睡眠薬などによって第三者に強制的に眠らされた場合は眠ってしまい、癒着が発生します。</div>
+    </details>
+
+    <details>
+      <summary>異種間で生まれた個体はどんな見た目になりますか？</summary>
+      <div class="qa-answer">種族が異なっていても、生まれた個体は両者の外見的特徴を引き継ぎます。種族は雌側のものになりますが、外見や能力は両親から受け継がれます。例えば、しろもちの雌とくろもちの雄の間に生まれた個体は、種族はしろもちですが、くろもち並みに知能が高くなります。</div>
+    </details>
+
+    <details>
+      <summary>もちは人間の言葉を理解できますか？</summary>
+      <div class="qa-answer">ある程度は理解できます。ただし言語能力が幼児程度のため、難しい言葉や複雑な表現は理解できないことがあります。一方で、何らかの方法でその言葉の意味を知ると、自分でも使うようになります。人間側がもちの言葉を理解できるかも同様で、慣れや接触頻度によって変わります。</div>
+    </details>
+
+    <details>
+      <summary>もちは自然界にどのくらいの数がいますか？</summary>
+      <div class="qa-answer">現実の虫に近い感覚で生息しています。個体としての性能は低いものの、旺盛な繁殖力でその弱さを補っており、自然環境の中では決して少なくない数が存在しています。</div>
+    </details>
+
+    <details>
+      <summary>あくせさりーを全て失ったもちはどうなりますか？</summary>
+      <div class="qa-answer">失った直後は新たなあくせさりーを手に入れようと必死になります。それでも所持していない状態が続くと、群れ内での信用・地位が失われ、最終的には群れを追い出されてはぐれもちになります。</div>
+    </details>
   </section>
 
 </main>
+
+</div><!-- /.layout -->
 
 <!-- コメントモーダル -->
 <div id="comment-modal" style="
@@ -1339,6 +1456,7 @@
   <p>もち設定資料集 ver 1.0</p>
   <p>CC0 パブリックドメイン ― 著作権を放棄します。自由に使用・改変・配布してください。</p>
   <p style="margin-top:8px;font-size:.75rem">東方Projectとは一切関係ありません。</p>
+  <p style="margin-top:8px;font-size:.75rem;color:var(--ink-light)">サイト作成にあたりAIを使用しています。</p>
 </footer>
 
 <script>
@@ -1353,11 +1471,39 @@
     modal.style.display = 'none';
     document.body.style.overflow = '';
   }
-  // モーダル外クリックで閉じる
   document.addEventListener('click', e => {
     const modal = document.getElementById('comment-modal');
     if (e.target === modal) closeCommentTab();
   });
+
+  // モバイルナビ開閉
+  function toggleNav() {
+    document.getElementById('sidebar').classList.toggle('open');
+    document.getElementById('nav-overlay').classList.toggle('open');
+  }
+  function closeNav() {
+    document.getElementById('sidebar').classList.remove('open');
+    document.getElementById('nav-overlay').classList.remove('open');
+  }
+
+  // スクロール連動アクティブ表示
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('nav a[href^="#"]');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        navLinks.forEach(a => {
+          a.classList.toggle('active', a.getAttribute('href') === '#' + entry.target.id);
+        });
+      }
+    });
+  }, { rootMargin: '-20% 0px -70% 0px' });
+  sections.forEach(s => observer.observe(s));
+
+  // ナビリンククリックでモバイルナビを閉じる
+  navLinks.forEach(a => a.addEventListener('click', () => {
+    if (window.innerWidth <= 768) closeNav();
+  }));
 </script>
 
 <!-- Firebase -->
