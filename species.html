@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>もちの種族一覧 ― もち設定資料集</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;500;700;900&family=Noto+Serif+JP:wght@400;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg:        #fdf6ee;
+      --bg2:       #faeee0;
+      --surface:   #fff9f3;
+      --border:    #e8d5c0;
+      --ink:       #3a2a1e;
+      --ink-light: #7a6050;
+      --accent:    #c9613a;
+      --accent2:   #e8a87c;
+      --dark:      #1a1008;
+      --dark-soft: #2d1e12;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Zen Maru Gothic', sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      line-height: 1.8;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed; inset: 0; z-index: -1;
+      background-image:
+        radial-gradient(circle at 20% 20%, rgba(201,97,58,.06) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(232,168,124,.08) 0%, transparent 50%),
+        url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23c9613a' fill-opacity='0.03'%3E%3Ccircle cx='30' cy='30' r='4'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    }
+
+    /* ── ヘッダー ── */
+    header {
+      position: relative;
+      text-align: center;
+      padding: 60px 24px 40px;
+      overflow: hidden;
+    }
+
+    .header-deco {
+      position: absolute; inset: 0; z-index: 0;
+      display: flex; align-items: center; justify-content: center;
+      pointer-events: none;
+    }
+
+    .mochi-float {
+      font-size: 120px;
+      opacity: .07;
+      animation: floatY 6s ease-in-out infinite;
+      user-select: none;
+    }
+
+    @keyframes floatY {
+      0%,100% { transform: translateY(0); }
+      50%      { transform: translateY(-20px); }
+    }
+
+    header h1 {
+      position: relative; z-index: 1;
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 900;
+      letter-spacing: .05em;
+      color: var(--ink);
+      text-shadow: 3px 3px 0 var(--accent2);
+    }
+
+    header .subtitle {
+      position: relative; z-index: 1;
+      margin-top: 10px;
+      font-size: .9rem;
+      color: var(--ink-light);
+      font-family: 'Noto Serif JP', serif;
+    }
+
+    .back-link {
+      position: relative; z-index: 1;
+      display: inline-flex; align-items: center; gap: 6px;
+      margin-top: 16px;
+      padding: 6px 18px;
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: 999px;
+      font-size: .82rem;
+      font-weight: 700;
+      color: var(--ink-light);
+      text-decoration: none;
+      transition: color .2s, border-color .2s;
+    }
+    .back-link:hover { color: var(--accent); border-color: var(--accent2); }
+
+    /* ── メイン ── */
+    main {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 40px 24px 96px;
+    }
+
+    /* ── フィルター ── */
+    .filter-bar {
+      display: flex; flex-wrap: wrap; gap: 10px;
+      margin-bottom: 32px;
+      align-items: center;
+    }
+
+    .filter-label {
+      font-size: .82rem;
+      font-weight: 700;
+      color: var(--ink-light);
+      margin-right: 4px;
+    }
+
+    .filter-btn {
+      padding: 5px 16px;
+      border-radius: 999px;
+      border: 1.5px solid var(--border);
+      background: var(--surface);
+      font-family: 'Zen Maru Gothic', sans-serif;
+      font-size: .82rem;
+      font-weight: 700;
+      color: var(--ink-light);
+      cursor: pointer;
+      transition: all .2s;
+    }
+    .filter-btn:hover  { border-color: var(--accent2); color: var(--accent); }
+    .filter-btn.active { background: var(--accent); border-color: var(--accent); color: white; }
+
+    /* ── 種族グリッド ── */
+    .species-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 20px;
+    }
+
+    /* ── 種族カード ── */
+    .species-card {
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: 20px;
+      padding: 24px;
+      position: relative;
+      overflow: hidden;
+      transition: transform .25s, box-shadow .25s;
+      animation: fadeUp .5s ease both;
+    }
+    .species-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(58,42,30,.1); }
+    .species-card.hidden { display: none; }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* 種族ごとのアクセントライン */
+    .species-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0;
+      height: 4px;
+    }
+    .species-card[data-type="しろもち"]::before { background: #e8e0d8; }
+    .species-card[data-type="えだもち"]::before { background: #8bc34a; }
+    .species-card[data-type="くろもち"]::before { background: #4a3060; }
+
+    .card-header {
+      display: flex; align-items: center; gap: 14px;
+      margin-bottom: 14px;
+    }
+
+    .hair-dot {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      border: 2px solid rgba(0,0,0,.08);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.2rem;
+    }
+
+    .card-name { font-size: 1.2rem; font-weight: 900; }
+    .card-species {
+      font-size: .72rem;
+      font-weight: 700;
+      color: var(--ink-light);
+      letter-spacing: .06em;
+    }
+
+    .card-tags {
+      display: flex; flex-wrap: wrap; gap: 6px;
+      margin-bottom: 12px;
+    }
+
+    .tag {
+      padding: 2px 10px;
+      border-radius: 999px;
+      font-size: .72rem;
+      font-weight: 700;
+    }
+    .tag-type    { background: rgba(201,97,58,.1);  color: var(--accent); }
+    .tag-food    { background: rgba(100,180,100,.12); color: #3a7a3a; }
+    .tag-solo    { background: rgba(100,80,160,.1);   color: #5a3a9a; }
+    .tag-social  { background: rgba(200,150,50,.1);   color: #7a5a10; }
+
+    .card-body { font-size: .875rem; color: var(--ink-light); line-height: 1.85; }
+
+    .card-detail {
+      margin-top: 14px;
+      padding-top: 12px;
+      border-top: 1px solid var(--border);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px 12px;
+      font-size: .78rem;
+    }
+    .detail-item { display: flex; gap: 6px; }
+    .detail-key  { color: var(--ink-light); flex-shrink: 0; }
+    .detail-val  { font-weight: 700; color: var(--ink); }
+
+    /* ── 追加ボタン ── */
+    .add-btn {
+      display: flex; align-items: center; justify-content: center;
+      gap: 8px;
+      border: 2px dashed var(--border);
+      border-radius: 20px;
+      padding: 40px 24px;
+      font-size: .9rem;
+      font-weight: 700;
+      color: var(--ink-light);
+      cursor: default;
+      background: transparent;
+      min-height: 160px;
+    }
+
+    /* ── フッター ── */
+    footer {
+      text-align: center;
+      padding: 32px 24px;
+      border-top: 1.5px solid var(--border);
+      font-size: .8rem;
+      color: var(--ink-light);
+      line-height: 2;
+    }
+
+    @media (max-width: 600px) {
+      .species-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-deco"><span class="mochi-float">🫓</span></div>
+  <h1>もちの種族一覧</h1>
+  <p class="subtitle">現在登録されている種族：3種</p>
+  <a href="index.html" class="back-link">← 設定資料集に戻る</a>
+</header>
+
+<main>
+
+  <!-- フィルター -->
+  <div class="filter-bar">
+    <span class="filter-label">絞り込み：</span>
+    <button class="filter-btn active" onclick="filter('all', this)">すべて</button>
+    <button class="filter-btn" onclick="filter('草食', this)">草食</button>
+    <button class="filter-btn" onclick="filter('雑食', this)">雑食</button>
+    <button class="filter-btn" onclick="filter('群れ', this)">群れ型</button>
+    <button class="filter-btn" onclick="filter('単独', this)">単独型</button>
+  </div>
+
+  <!-- 種族グリッド -->
+  <div class="species-grid" id="grid">
+
+    <!-- しろもち -->
+    <div class="species-card" data-type="しろもち" data-food="草食" data-social="群れ">
+      <div class="card-header">
+        <div class="hair-dot" style="background:#f5f0eb;">🌸</div>
+        <div>
+          <div class="card-name">しろもち</div>
+          <div class="card-species">基本種</div>
+        </div>
+      </div>
+      <div class="card-tags">
+        <span class="tag tag-type">基本種</span>
+        <span class="tag tag-food">草食</span>
+        <span class="tag tag-social">群れ型</span>
+      </div>
+      <div class="card-body">
+        もちの中で最もポピュラーな基本種。感情が顔に素直に出る。食べ物に目がなく、すぐ騙される。人間に懐きやすくぬし依存になりやすい。仲間思いだがこもちには特に献身的。
+      </div>
+      <div class="card-detail">
+        <div class="detail-item"><span class="detail-key">髪の色</span><span class="detail-val">白</span></div>
+        <div class="detail-item"><span class="detail-key">食性</span><span class="detail-val">草食</span></div>
+        <div class="detail-item"><span class="detail-key">行動</span><span class="detail-val">群れ型</span></div>
+        <div class="detail-item"><span class="detail-key">知性</span><span class="detail-val">低〜中</span></div>
+        <div class="detail-item"><span class="detail-key">人間関係</span><span class="detail-val">懐きやすい</span></div>
+        <div class="detail-item"><span class="detail-key">昼夜</span><span class="detail-val">昼行性</span></div>
+      </div>
+    </div>
+
+    <!-- えだもち -->
+    <div class="species-card" data-type="えだもち" data-food="草食" data-social="群れ">
+      <div class="card-header">
+        <div class="hair-dot" style="background:#c8e66a;">👑</div>
+        <div>
+          <div class="card-name">えだもち</div>
+          <div class="card-species">基本種</div>
+        </div>
+      </div>
+      <div class="card-tags">
+        <span class="tag tag-type">基本種</span>
+        <span class="tag tag-food">草食</span>
+        <span class="tag tag-social">群れ型</span>
+      </div>
+      <div class="card-body">
+        自然発生的にリーダーを名乗る種。知ったかぶりが激しく失敗を認めない。実はびびりで強いものには急におとなしくなる。食べ物の前では威厳が完全に崩れる。
+      </div>
+      <div class="card-detail">
+        <div class="detail-item"><span class="detail-key">髪の色</span><span class="detail-val">黄緑</span></div>
+        <div class="detail-item"><span class="detail-key">食性</span><span class="detail-val">草食</span></div>
+        <div class="detail-item"><span class="detail-key">行動</span><span class="detail-val">群れ型</span></div>
+        <div class="detail-item"><span class="detail-key">知性</span><span class="detail-val">低〜中</span></div>
+        <div class="detail-item"><span class="detail-key">人間関係</span><span class="detail-val">慣れに時間がかかる</span></div>
+        <div class="detail-item"><span class="detail-key">昼夜</span><span class="detail-val">昼行性</span></div>
+      </div>
+    </div>
+
+    <!-- くろもち -->
+    <div class="species-card" data-type="くろもち" data-food="雑食" data-social="単独">
+      <div class="card-header">
+        <div class="hair-dot" style="background:#2a1e38; color:#e0d0f0;">🌑</div>
+        <div>
+          <div class="card-name">くろもち</div>
+          <div class="card-species">捕食種</div>
+        </div>
+      </div>
+      <div class="card-tags">
+        <span class="tag tag-type">捕食種</span>
+        <span class="tag tag-food">雑食</span>
+        <span class="tag tag-solo">単独型</span>
+      </div>
+      <div class="card-body">
+        群れに属さない異質な捕食種。感情表現が極めて少なく、他のもちを食料として認識する。知性は3種の中で最も高い。まれに人間に懐いた個体は非常に忠実になる。
+      </div>
+      <div class="card-detail">
+        <div class="detail-item"><span class="detail-key">髪の色</span><span class="detail-val">黒</span></div>
+        <div class="detail-item"><span class="detail-key">食性</span><span class="detail-val">雑食</span></div>
+        <div class="detail-item"><span class="detail-key">行動</span><span class="detail-val">単独型</span></div>
+        <div class="detail-item"><span class="detail-key">知性</span><span class="detail-val">高</span></div>
+        <div class="detail-item"><span class="detail-key">人間関係</span><span class="detail-val">基本近づかない</span></div>
+        <div class="detail-item"><span class="detail-key">昼夜</span><span class="detail-val">昼行性</span></div>
+      </div>
+    </div>
+
+    <!-- 追加予定スロット -->
+    <div class="add-btn">＋ 種族追加予定</div>
+
+  </div>
+</main>
+
+<footer>
+  <p>もち設定資料集 ― 種族一覧</p>
+  <p>作成：カイロス　／　CC0 パブリックドメイン</p>
+</footer>
+
+<script>
+  function filter(type, btn) {
+    // ボタンのアクティブ切り替え
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+
+    const cards = document.querySelectorAll('.species-card');
+    cards.forEach(card => {
+      if (type === 'all') {
+        card.classList.remove('hidden');
+        return;
+      }
+      const food   = card.dataset.food   || '';
+      const social = card.dataset.social || '';
+      const match  = food === type || social.includes(type);
+      card.classList.toggle('hidden', !match);
+    });
+  }
+</script>
+
+</body>
+</html>
